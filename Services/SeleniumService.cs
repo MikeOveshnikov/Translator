@@ -1,6 +1,5 @@
-﻿using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium;
-using Microsoft.VisualBasic.FileIO;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
 using TranslatorApi.Extensions;
 
 namespace TranslatorApi.Services;
@@ -38,6 +37,7 @@ internal static class SeleniumService
     private static WebDriver RunFirefox()
     {
         var options = new FirefoxOptions();
+        //options.LogLevel = FirefoxDriverLogLevel.Trace;
         //options.AddArguments("--no-sandbox", "--width=1920", "--height=1080");
 
 #if !DEBUG
@@ -46,7 +46,7 @@ internal static class SeleniumService
 #endif
 
         var service = FirefoxDriverService.CreateDefaultService("Drivers/", "geckodriver");
-        return new FirefoxDriver(service, options, TimeSpan.FromSeconds(180));
+        return new FirefoxDriver(service, options);
     }
 
     /// <summary>
@@ -56,15 +56,15 @@ internal static class SeleniumService
     /// <param name="html">Текст который надо перевести</param>
     private static string TranslateHtml(WebDriver driver, string html)
     {
-        // Открываем страницу входа
+        // Открываем страницу google переводчика
         driver.Navigate().GoToUrl("https://translate.google.com/?hl=ru");
-        Thread.Sleep(1000);
-        // Ищем поле "username" и записываем туда адес электронной почты
+        Thread.Sleep(2000);
+        // Ищем поле "textarea" и записываем туда не переведенный текст
         driver.GetElement(FindType.ClassName, "er8xn")!
             .InputText(html);
 
         Thread.Sleep(5000);
-        // Ищем кнопку "Далее" и нажимаем её
+        // Ищем поле "textarea" с переводом и возвращаем его
         var text = driver.GetElement(FindType.ClassName, "HwtZe")!.Text;
 
         return text;

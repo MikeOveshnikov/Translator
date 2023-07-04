@@ -8,14 +8,13 @@ namespace TranslatorApi.Controllers;
 [ApiController]
 public class TranslateController : ControllerBase
 {
-	[HttpPost("gettext")]
-	public IActionResult GetText(HtmlInputModel model)
-	{
-		string translateText = SeleniumService.Translate(model.Html);
-		if (string.IsNullOrEmpty(translateText))
-			return BadRequest();
+    [HttpPost("gettext")]
+    public IActionResult GetText(HtmlInputModel model)
+    {
+        string translateText = SeleniumService.Translate(model.Html);
+        if (string.IsNullOrEmpty(translateText))
+            return BadRequest();
 
-		string t = translateText;
-		return Ok(new HtmlInputModel { Html = translateText });
-	}
+        return Ok(new HtmlInputModel { Html = translateText });
+    }
 }

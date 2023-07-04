@@ -2,5 +2,5 @@
 
 public class HtmlInputModel
 {
-	public string Html { get; set; } = string.Empty;
+    public string Html { get; set; } = string.Empty;
 }
